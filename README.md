@@ -7,7 +7,10 @@
 ## Technical Description
 
   The program will always be displaying one of two windows in a GUI. The first is the Visual Space. This Visual Space will be an open space where objects can be created and used at user defined coordinates, it is a completely open flexible space for the visual aspect of planning and/or creating. An object can be either created independent of the rest of the objects or can be created as a parent or child of another object. 
+  
 	These objects will either be External Documents or Labels. Labels will show a title and potentially a subtitle and/or description if the user wants. External Documents will do the same thing as labels but also allow the user to select the document and enter the other window to edit the document.
 Each object will (in most cases) either be a parent or a child of another object and will usually be created in that role. Parent and child objects are connected via a connection line. This connection line will just act as a visual representation of the relationship between objects.
+
 	The second window the user will see when using the program will be the text editing window. In this window the Internal Document will receive information from the External Document it is representing and allow the user to edit the Internals and Externals of that document. Inside this window a user will not only be able to create and delete text, but also format and display it in various different ways similar to Microsoft Word or Google Docs. There will be options for bolding, italicizing, underlining, strikingthrough, colouring text, different fonts, text sizes, text aligning, etc.
+	
 	All of the Text, External Documents, and Labels will be saved to files in a specific directory and be able to be retrieved at any time. Upon loading the program you will be prompted to create a new project or continue with an existing one, giving you the easy option of the last project you worked on or the ability to open a directory to find the folder for the project the user is looking for. Projects will be completely independent and isolated from each other.
