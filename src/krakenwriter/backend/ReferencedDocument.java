@@ -1,7 +1,7 @@
 package krakenwriter.backend;
 
 public class ReferencedDocument extends Obj {
-    
+
     private InternalDocument referencedDoc;
 
     private String referencedText;
@@ -16,12 +16,16 @@ public class ReferencedDocument extends Obj {
         }
     }
 
-    public  ReferencedDocument(ExternalDocument externalDoc) {
+    public ReferencedDocument(ExternalDocument externalDoc) {
         super(externalDoc.title, externalDoc.description, externalDoc.getID());
         this.referencedDoc = externalDoc.getInternal();
     }
-    
-    public void setReferencedText(String referencedText) { this.referencedText = referencedText; }
 
-    public String getReferencedText() { return referencedText; }
+    public void setReferencedText(String referencedText) {
+        this.referencedText = referencedText;
+    }
+
+    public String getReferencedText() {
+        return referencedText;
+    }
 }

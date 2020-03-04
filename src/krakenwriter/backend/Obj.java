@@ -17,7 +17,7 @@ public abstract class Obj {
         this.description = description;
         this.id = ID.toID(id);
     }
-    
+
     public Obj(String title, String description, ID id) {
         this.title = title;
         this.description = description;

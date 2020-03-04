@@ -19,13 +19,13 @@ public abstract class VisualObject extends Obj {
         this.y = y;
         this.width = width;
         this.height = height;
-        
+
         if (parents != null) {
             parentObjects.addAll(Arrays.asList(parents));
         } else {
             parentObjects = new ArrayList();
         }
-        
+
         if (children != null) {
             childObjects.addAll(Arrays.asList(children));
         } else {
@@ -39,13 +39,13 @@ public abstract class VisualObject extends Obj {
         this.y = y;
         this.width = width;
         this.height = height;
-        
+
         if (parents != null) {
             parentObjects.addAll(Arrays.asList(parents));
         } else {
             parentObjects = new ArrayList();
         }
-        
+
         if (children != null) {
             childObjects.addAll(Arrays.asList(children));
         } else {
@@ -83,14 +83,14 @@ public abstract class VisualObject extends Obj {
         this.childObjects.add(child);
         child.parentObjects.add(this);
     }
-    
+
     public void remove(VisualObject child) {
         if (childObjects.contains(child)) {
             childObjects.remove(child);
             child.parentObjects.remove(this);
         }
     }
-    
+
     public VisualObject extract() {
         for (VisualObject p : parentObjects) {
             p.remove(this);
