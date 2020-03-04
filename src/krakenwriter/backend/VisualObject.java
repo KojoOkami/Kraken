@@ -1,4 +1,4 @@
-package backend_models;
+package krakenwriter.backend;
 
 import java.util.ArrayList;
 import java.util.Arrays;

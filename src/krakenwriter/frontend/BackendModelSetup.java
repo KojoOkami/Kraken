@@ -1,4 +1,4 @@
-package frontend_viewcontroller;
+package krakenwriter.frontend;
 
 public class BackendModelSetup {
 

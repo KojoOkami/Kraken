@@ -1,4 +1,4 @@
-package the_app;
+package krakenwriter.app;
 
 public class TheAppRunner {
     public static void main(String[] args){

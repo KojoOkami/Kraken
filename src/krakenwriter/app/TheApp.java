@@ -1,6 +1,8 @@
-package the_app;
+package krakenwriter.app;
 
-import frontend_viewcontroller.*;
+import krakenwriter.frontend.BackendModelSetup;
+import krakenwriter.frontend.ModelsAndViewsController;
+import krakenwriter.frontend.MainViewDisplay;
 
 public class TheApp implements Runnable {
 

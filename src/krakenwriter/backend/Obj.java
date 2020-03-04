@@ -1,4 +1,4 @@
-package backend_models;
+package krakenwriter.backend;
 
 public abstract class Obj {
 

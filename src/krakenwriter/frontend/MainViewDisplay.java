@@ -1,6 +1,6 @@
-package frontend_viewcontroller;
+package krakenwriter.frontend;
 
-import backend_models.VisualSpace;
+import krakenwriter.backend.VisualSpace;
 
 import javax.swing.*;
 import java.awt.*;

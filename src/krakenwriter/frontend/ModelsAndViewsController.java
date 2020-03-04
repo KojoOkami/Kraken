@@ -1,4 +1,4 @@
-package frontend_viewcontroller;
+package krakenwriter.frontend;
 
 public class ModelsAndViewsController {
     //Instance vars to reference the other frontend classes

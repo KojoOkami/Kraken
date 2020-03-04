@@ -1,4 +1,4 @@
-package frontend_viewcontroller;
+package krakenwriter.frontend;
 
 import javax.swing.*;
 
@@ -7,7 +7,7 @@ public class KrakenInternalFrame extends JInternalFrame {
     static int openFrameCount = 0;
     static final int xOffset = 30, yOffset = 30;
 
-    private backend_models.ExternalDocument linkedDocument;
+    private krakenwriter.backend.ExternalDocument linkedDocument;
 
     JLabel title;
 
