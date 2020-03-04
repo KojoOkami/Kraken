@@ -6,7 +6,7 @@ public class ReferencedDocument extends Obj {
 
     private String referencedText;
 
-    public ReferencedDocument(String id) {
+    public ReferencedDocument(ID id) {
         super(VisualSpace.getObject(id).title, VisualSpace.getObject(id).description, id);
         Obj object = VisualSpace.getObject(id);
         if (object instanceof ExternalDocument) {
