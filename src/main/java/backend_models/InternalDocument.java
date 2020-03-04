@@ -6,7 +6,7 @@ public class InternalDocument extends Obj {
     private Text internalText;
 
     public InternalDocument(ExternalDocument externalDoc) {
-        super(externalDoc.getTitle(), externalDoc.getDescription(), externalDoc.getID());
+        super(externalDoc.title, externalDoc.description, externalDoc.getID());
         this.externalDoc = externalDoc;
     }
     

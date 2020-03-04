@@ -3,7 +3,7 @@ package backend_models;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class VisualObject extends Obj {
+public abstract class VisualObject extends Obj {
 
     private int x;
     private int y;
@@ -58,9 +58,25 @@ public class VisualObject extends Obj {
         this.y = y;
     }
 
+    public int x() {
+        return x;
+    }
+
+    public int y() {
+        return y;
+    }
+
     public void setDimensions(int w, int h) {
         this.width = w;
         this.height = h;
+    }
+
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
     }
 
     public void append(VisualObject child) {

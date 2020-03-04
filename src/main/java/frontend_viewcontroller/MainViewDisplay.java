@@ -44,7 +44,7 @@ public class MainViewDisplay extends JFrame implements ActionListener {
 
         newMenu(menuBar, "Project", KeyEvent.VK_P, new String[]{"New Project", "Open Project", "Delete Project"}, new int[]{-1, KeyEvent.VK_O, -1});
         newMenu(menuBar, "Edit", -1, new String[]{"Undo", "Redo"}, new int[]{KeyEvent.VK_Z, KeyEvent.VK_Y});
-        newMenu(menuBar, "Objects", KeyEvent.VK_D, new String[]{"New Object", "Edit Object", "Delete Object"}, new int[]{KeyEvent.VK_N, KeyEvent.VK_E, KeyEvent.VK_DELETE});
+        newMenu(menuBar, "Objects", KeyEvent.VK_D, new String[]{"New Document", "New Label", "Edit Object", "Delete Object"}, new int[]{KeyEvent.VK_N, -1, KeyEvent.VK_E, KeyEvent.VK_DELETE});
         newMenu(menuBar, "Windows", KeyEvent.VK_W, new String[]{"Navigator"}, new int[]{KeyEvent.VK_F});
 
         return menuBar;
@@ -83,8 +83,10 @@ public class MainViewDisplay extends JFrame implements ActionListener {
 
         } else if ("Redo".equals(e.getActionCommand())) { //Redo
 
-        } else if ("New Object".equals(e.getActionCommand())) { //New Object
-            createFrame();
+        } else if ("New Document".equals(e.getActionCommand())) { //New Object
+            createFrame("Document");
+        } else if ("New Label".equals(e.getActionCommand())) { //New Object
+            createFrame("Label");
         } else if ("Edit Object".equals(e.getActionCommand())) { //Edit Object
 
         } else if ("Delete Object".equals(e.getActionCommand())) { //Delete Object
@@ -95,8 +97,8 @@ public class MainViewDisplay extends JFrame implements ActionListener {
     }
 
     //Create a new internal frame.
-    protected void createFrame() {
-        KrakenInternalFrame frame = new KrakenInternalFrame();
+    protected void createFrame(String object) {
+        KrakenInternalFrame frame = new KrakenInternalFrame(VisualSpace.createNewObject(object).getID().toString());
         frame.setVisible(true); //necessary as of 1.3
         desktop.add(frame);
         try {

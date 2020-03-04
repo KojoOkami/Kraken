@@ -1,16 +1,22 @@
 package backend_models;
 
+import java.util.ArrayList;
+
 public class ConnectionLine extends VisualObject {
     private VisualObject parentObj;
     private VisualObject childObj;
 
     public ConnectionLine(VisualObject parent, VisualObject child) {
-        super("Connection Line", "", parent.x, parent.y, Math.abs(parent.x-child.x), Math.abs(parent.y-child.y));
+        super(null, null, parent.x(), parent.y(), Math.abs(parent.x()-child.x()), Math.abs(parent.y()-child.y()), new VisualObject[]{parent}, new VisualObject[]{child});
         this.parentObj = parent;
         this.childObj = child;
     }
 
-    public void renderSelf() {
-        //Renders self on Visual Space
+    public VisualObject getParentObj() {
+        return parentObj;
+    }
+
+    public VisualObject getChildObj() {
+        return childObj;
     }
 }

@@ -7,7 +7,7 @@ public class ComputerFile {
     public String saveStatus;
 
     public ComputerFile(Obj object) {
-        this.PATH = "..\\" + VisualSpace.projectName.replaceAll(" ", "") + "\\" + object.getTitle().replaceAll(" ", "") + ".txt";
+        this.PATH = "..\\" + VisualSpace.projectName.replaceAll(" ", "") + "\\" + object.title.strip().replaceAll(" ", "_") + ".txt";
         this.object = object;
         saveStatus = null;
     }
@@ -18,7 +18,7 @@ public class ComputerFile {
     }
 
     public void saveDocument() {
-
+        
     }
 
     public Object getText() {

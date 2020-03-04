@@ -7,7 +7,7 @@ public class ReferencedDocument extends Obj {
     private String referencedText;
 
     public ReferencedDocument(String id) {
-        super(VisualSpace.getObject(id).getTitle(), VisualSpace.getObject(id).getDescription(), id);
+        super(VisualSpace.getObject(id).title, VisualSpace.getObject(id).description, id);
         Obj object = VisualSpace.getObject(id);
         if (object instanceof ExternalDocument) {
             this.referencedDoc = ((ExternalDocument) object).getInternal();
@@ -17,7 +17,7 @@ public class ReferencedDocument extends Obj {
     }
 
     public  ReferencedDocument(ExternalDocument externalDoc) {
-        super(externalDoc.getTitle(), externalDoc.getDescription(), externalDoc.getID());
+        super(externalDoc.title, externalDoc.description, externalDoc.getID());
         this.referencedDoc = externalDoc.getInternal();
     }
     

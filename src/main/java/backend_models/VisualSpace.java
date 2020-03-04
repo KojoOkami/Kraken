@@ -9,29 +9,23 @@ public class VisualSpace {
     public static String projectName;
     private static ArrayList<VisualObject> objects;
 
-    public static String generateID(VisualObject obj) {
-        //This will generate a random ID that does not exist already
-        //The ID will be an 8 digit hex number with an identifier on the front
-        //The identifier will be based on the object type
-        return "";
-    }
-
     public static void createNewProject(String projectName){
         //This will check if the projectName already exists..
         //If it does not, create a new project with default sizes
         //If it does, load the project from the files using loadProject()
     }
 
-    public static void createNewObject(Object newObject){
+    public static VisualObject createNewObject(String newObject){
         //Will take a new object, put it in the objects ArrayList
         //And then place it visually on the space
         //(It will make sure to check the size and position of the space and object and increase the size of the Visual Space if necessary)
         //It will then call applyConnections() using the the object as a parameter
+        return null;
     }
     
-    public static VisualObject getObject(String ID) {
+    public static VisualObject getObject(ID id) {
         for (VisualObject object : objects) {
-            if (object.getID().equals(ID)) {
+            if (object.getID().equals(id)) {
               return object;
             }
         }
@@ -39,11 +33,7 @@ public class VisualSpace {
     }
     
     public static VisualObject getObject(String Title) {
-        for (VisualObject object : objects) {
-            if (object.getID().equals(ID)) {
-              return object;
-            }
-        }
+        
         return null;
     }
 
