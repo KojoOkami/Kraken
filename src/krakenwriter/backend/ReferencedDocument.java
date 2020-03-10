@@ -1,13 +1,13 @@
-package backend_models;
+package krakenwriter.backend;
 
 public class ReferencedDocument extends Obj {
-    
+
     private InternalDocument referencedDoc;
 
     private String referencedText;
 
-    public ReferencedDocument(String id) {
-        super(VisualSpace.getObject(id).getTitle(), VisualSpace.getObject(id).getDescription(), id);
+    public ReferencedDocument(ID id) {
+        super(VisualSpace.getObject(id).title, VisualSpace.getObject(id).description, id);
         Obj object = VisualSpace.getObject(id);
         if (object instanceof ExternalDocument) {
             this.referencedDoc = ((ExternalDocument) object).getInternal();
@@ -16,12 +16,16 @@ public class ReferencedDocument extends Obj {
         }
     }
 
-    public  ReferencedDocument(ExternalDocument externalDoc) {
-        super(externalDoc.getTitle(), externalDoc.getDescription(), externalDoc.getID());
+    public ReferencedDocument(ExternalDocument externalDoc) {
+        super(externalDoc.title, externalDoc.description, externalDoc.getID());
         this.referencedDoc = externalDoc.getInternal();
     }
-    
-    public void setReferencedText(String referencedText) { this.referencedText = referencedText; }
 
-    public String getReferencedText() { return referencedText; }
+    public void setReferencedText(String referencedText) {
+        this.referencedText = referencedText;
+    }
+
+    public String getReferencedText() {
+        return referencedText;
+    }
 }
