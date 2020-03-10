@@ -45,11 +45,30 @@ public class MainWindow extends JFrame implements ActionListener {
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        newMenu(menuBar, "Project", KeyEvent.VK_P, new String[]{"New Project", "Open Project", "Delete Project"}, new int[]{-1, KeyEvent.VK_O, -1});
-        newMenu(menuBar, "Edit", -1, new String[]{"Undo", "Redo"}, new int[]{KeyEvent.VK_Z, KeyEvent.VK_Y});
-        newMenu(menuBar, "Objects", KeyEvent.VK_D, new String[]{"New Document", "New Label", "Edit Object", "Delete Object"}, new int[]{KeyEvent.VK_N, -1, KeyEvent.VK_E, KeyEvent.VK_DELETE});
-        newMenu(menuBar, "Windows", KeyEvent.VK_W, new String[]{"Navigator"}, new int[]{KeyEvent.VK_F});
-
+        newMenu(menuBar,
+                "Project",
+                KeyEvent.VK_P, 
+                new String[]{   "New Project",  "Open Project",     "Delete Project"},
+                new int[]{      -1,             KeyEvent.VK_O,      -1});
+        
+        newMenu(menuBar, 
+                "Edit", 
+                -1, 
+                new String[]{   "Undo",         "Redo"}, 
+                new int[]{      KeyEvent.VK_Z,  KeyEvent.VK_Y});
+        
+        newMenu(menuBar, 
+                "Objects", 
+                KeyEvent.VK_D, 
+                new String[]{   "New Document",     "New Label",    "Edit Object",      "Delete Object"}, 
+                new int[]{      KeyEvent.VK_N,      -1,             KeyEvent.VK_E,      KeyEvent.VK_DELETE});
+        
+        newMenu(menuBar, 
+                "Windows", 
+                KeyEvent.VK_W, 
+                new String[]{   "Navigator"}, 
+                new int[]{      KeyEvent.VK_F});
+        
         return menuBar;
     }
     
