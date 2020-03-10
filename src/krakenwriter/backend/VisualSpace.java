@@ -8,7 +8,7 @@ public class VisualSpace {
     private static int width;
     private static int height;
     public static String projectName;
-    private static ArrayList<VisualObject> objects;
+    private static ArrayList<VisualObject> objects = new ArrayList();
 
     /**
      * Sets all variables to default for a new project.
@@ -48,10 +48,36 @@ public class VisualSpace {
      * @return the object that was just created
      */
     public static VisualObject createNewObject(String newObject) {
-        //Will take a new object, put it in the objects ArrayList
-        //And then place it visually on the space
-        //(It will make sure to check the size and position of the space and object and increase the size of the Visual Space if necessary)
-        //It will then call applyConnections() using the the object as a parameter
+        System.out.println("cno");
+        VisualObject obj;
+        if (newObject.equals("Document")) {
+            objects.add(obj = new ExternalDocument(0, 0, 300, 300));
+            return obj;
+        } else if (newObject.equals("Label")) {
+            objects.add(obj = new Label(0, 0, 300, 300));
+            return obj;
+        }
+        return null;
+    }
+
+    /**
+     * Creates a new object in the visual space.
+     *
+     * @param newObject the name of the new object ("Document", "Label")
+     * @param parent the parent of the new object
+     * @return the object that was just created
+     */
+    public static VisualObject createNewObject(String newObject, VisualObject parent) {
+        System.out.println("cno");
+        VisualObject obj;
+        switch (newObject) {
+            case "Document":
+                objects.add(obj = new ExternalDocument(0, 0, 300, 300, parent));
+                return obj;
+            case "Label":
+                objects.add(obj = new Label(0, 0, 300, 300, parent));
+                return obj;
+        }
         return null;
     }
 
@@ -75,11 +101,19 @@ public class VisualSpace {
      * is not a reliable way to find objects and will return all objects with
      * the specified title if there are multiple.
      *
-     * @param Title the title of the object
+     * @param title the title of the object
      * @return all objects with that title in the project
      */
-    public static ArrayList<VisualObject> getObject(String Title) {
-
+    public static ArrayList<VisualObject> getObject(String title) {
+        ArrayList<VisualObject> list = new ArrayList();
+        for (VisualObject object : objects) {
+            if (object.title.equals(title)) {
+                list.add(object);
+            }
+        }
+        if (list.size() > 0) {
+            return list;
+        }
         return null;
     }
 

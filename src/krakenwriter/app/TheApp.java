@@ -1,18 +1,14 @@
 package krakenwriter.app;
 
-import krakenwriter.frontend.BackendModelSetup;
-import krakenwriter.frontend.ModelsAndViewsController;
-import krakenwriter.frontend.MainViewDisplay;
+import krakenwriter.frontend.MainWindow;
 
 public class TheApp implements Runnable {
 
     @Override
     public void run() {
+        
+        MainWindow theMainWindow = new MainWindow();
 
-        BackendModelSetup theBackendModel = new BackendModelSetup();
-        MainViewDisplay theMainViewDisplay = new MainViewDisplay(theBackendModel);
-        ModelsAndViewsController theMainViewsController = new ModelsAndViewsController(theBackendModel, theMainViewDisplay);
-
-        theMainViewDisplay.setVisible(true);
+        theMainWindow.setVisible(true);
     }
 }

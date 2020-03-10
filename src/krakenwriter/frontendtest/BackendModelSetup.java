@@ -1,4 +1,4 @@
-package krakenwriter.frontend;
+package krakenwriter.frontendtest;
 
 import krakenwriter.backend.*;
 

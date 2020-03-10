@@ -31,6 +31,10 @@ public class ID {
         this.identifier = identifier;
         this.code = code;
     }
+    
+    public String getIdentifier() {
+        return identifier;
+    }
 
     public String id() {
         return identifier + Integer.toHexString(code);
@@ -53,7 +57,7 @@ public class ID {
     }
     
     private boolean checkID() {
-        return VisualSpace.getObject(id()) != null;
+        return VisualSpace.getObject(this) != null;
     }
 
 }

@@ -1,14 +1,13 @@
-package krakenwriter.frontend;
+package krakenwriter.frontendtest;
 
 import krakenwriter.backend.VisualSpace;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-public class MainViewDisplay extends JFrame implements ActionListener {
+public class MainViewDisplay extends JFrame {
     //Instance variable to reference everything in backend
     BackendModelSetup theBackendModel;
 
@@ -66,39 +65,15 @@ public class MainViewDisplay extends JFrame implements ActionListener {
                         keyEvents[i], ActionEvent.CTRL_MASK));
             }
             menuItem.setActionCommand(menuItems[i]);
-            menuItem.addActionListener(this);
+            menuItem.addActionListener(ModelsAndViewsController);
             menu.add(menuItem);
-        }
-    }
-
-    //React to menu selections.
-    public void actionPerformed(ActionEvent e) {
-        if ("New Project".equals(e.getActionCommand())) { //New Project
-
-        } else if ("Open Project".equals(e.getActionCommand())) { //Open Project
-
-        } else if ("Delete Project".equals(e.getActionCommand())) { //Delete Project
-
-        }  else if ("Undo".equals(e.getActionCommand())) { //Undo
-
-        } else if ("Redo".equals(e.getActionCommand())) { //Redo
-
-        } else if ("New Document".equals(e.getActionCommand())) { //New Object
-            createFrame("Document");
-        } else if ("New Label".equals(e.getActionCommand())) { //New Object
-            createFrame("Label");
-        } else if ("Edit Object".equals(e.getActionCommand())) { //Edit Object
-
-        } else if ("Delete Object".equals(e.getActionCommand())) { //Delete Object
-            quit();
-        } else if ("Navigator".equals(e.getActionCommand())) { //Navigator
-
         }
     }
 
     //Create a new internal frame.
     protected void createFrame(String object) {
-        KrakenInternalFrame frame = new KrakenInternalFrame(VisualSpace.createNewObject(object).getID().toString());
+        System.out.print("NewFrame");
+        KrakenInternalFrame frame = new KrakenInternalFrame(VisualSpace.createNewObject(object));
         frame.setVisible(true); //necessary as of 1.3
         desktop.add(frame);
         try {
