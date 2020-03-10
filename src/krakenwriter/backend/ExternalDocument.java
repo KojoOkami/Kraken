@@ -5,12 +5,12 @@ public class ExternalDocument extends VisualObject {
     private InternalDocument internalDoc;
     
     public ExternalDocument(int x, int y, int width, int height) {
-        super("Untitled", "", x, y, width, height, null, null);
+        super("Untitled", "Example", x, y, width, height, null, null);
         this.internalDoc = new InternalDocument(this);
     }
 
     public ExternalDocument(int x, int y, int width, int height, VisualObject parent) {
-        super("Untitled", "", x, y, width, height, new VisualObject[]{parent}, null);
+        super("Untitled", "Example", x, y, width, height, new VisualObject[]{parent}, null);
         this.internalDoc = new InternalDocument(this);
     }
 
