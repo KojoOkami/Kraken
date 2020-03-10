@@ -10,7 +10,7 @@ public class ID {
     
     private String identifier; //DOC (Document), LBL (Label), CLN (Connection Line)
     private int code; //Hex Code (0x??????)
-
+    
     public ID(Obj object) {
         if (object instanceof ExternalDocument) {
             identifier = "DOC";
@@ -24,7 +24,7 @@ public class ID {
         
         do {
            code = instances++;
-        } while (!checkID());
+        } while (checkID());
     }
     
     private ID(String identifier, int code) {
