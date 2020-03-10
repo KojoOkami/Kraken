@@ -2,12 +2,12 @@ package krakenwriter.backend;
 
 public class Label extends VisualObject {
 
-    public Label(int x, int y, int width, int height) {
-        super("Untitled", null, x, y, width, height, null, null);
+    public Label() {
+        super("Untitled", null, -1, -1, -1, -1, null, null);
     }
 
-    public Label(int x, int y, int width, int height, VisualObject parent) {
-        super("Untitled", null, x, y, width, height, new VisualObject[]{parent}, null);
+    public Label(VisualObject parent) {
+        super("Untitled", null, -1, -1, -1, -1, new VisualObject[]{parent}, null);
     }
     
     public Label(String title, int x, int y, int width, int height, String id, VisualObject[] parents, VisualObject[] children) {

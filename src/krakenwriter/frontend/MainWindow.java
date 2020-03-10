@@ -1,6 +1,7 @@
 package krakenwriter.frontend;
 
 import java.awt.Dimension;
+import java.awt.MouseInfo;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         super(VisualSpace.projectName);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.initComponents();
     }
 
@@ -99,6 +101,7 @@ public class MainWindow extends JFrame {
 
     protected void createFrame(VisualObject object) {
         InternalWindow frame = new InternalWindow(object);
+        frame.setLocation(MouseInfo.getPointerInfo().getLocation().x - getLocationOnScreen().x - 5, MouseInfo.getPointerInfo().getLocation().y - getLocationOnScreen().y - 52);
         frame.setVisible(true);
         desktop.add(frame);
         try {
@@ -122,9 +125,9 @@ public class MainWindow extends JFrame {
             } else if ("Redo".equals(e.getActionCommand())) { //Redo
 
             } else if ("New Document".equals(e.getActionCommand())) { //New Object
-                createFrame(new ExternalDocument(20, 20, 30, 30));
+                createFrame(VisualSpace.createNewObject(new ExternalDocument()));
             } else if ("New Label".equals(e.getActionCommand())) { //New Object
-                createFrame(new Label(20, 20, 30, 30));
+                createFrame(VisualSpace.createNewObject(new Label()));
             } else if ("Edit Object".equals(e.getActionCommand())) { //Edit Object
 
             } else if ("Delete Object".equals(e.getActionCommand())) { //Delete Object

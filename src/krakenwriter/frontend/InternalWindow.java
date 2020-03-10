@@ -6,18 +6,26 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Image;
+import java.awt.MouseInfo;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import krakenwriter.backend.VisualObject;
 
 /**
  *
  * @author Connor
  */
-public class InternalWindow extends JInternalFrame {
+public class InternalWindow extends JInternalFrame implements InternalFrameListener {
 
     JPanel pane;
 
@@ -28,19 +36,14 @@ public class InternalWindow extends JInternalFrame {
 
     VisualObject obj;
 
-    static int openFrameCount = 0;
-    static final int X_OFFSET = 30, Y_OFFSET = 30;
-
     InternalWindow(VisualObject object) {
-        super(object.title + (++openFrameCount),
+        super(object.title,
                 true, //resizable
                 true, //closable
                 true, //maximizable
                 true);
         this.obj = object;
-
-        setLocation(X_OFFSET * openFrameCount, Y_OFFSET * openFrameCount);
-
+        
         initComponents();
     }
 
@@ -51,6 +54,7 @@ public class InternalWindow extends JInternalFrame {
         GridBagConstraints c;
 
         name = new JLabel(obj.title);
+        name.addMouseListener(l);
         c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 0;
@@ -66,6 +70,7 @@ public class InternalWindow extends JInternalFrame {
         pane.add(name, c);
 
         description = new JLabel(obj.description);
+        description.addMouseListener(l);
         c.gridx = 1;
         c.gridy = 1;
         //c.gridwidth = 1;
@@ -117,6 +122,81 @@ public class InternalWindow extends JInternalFrame {
         add(pane);
         
         this.pack();
+    }
+
+    @Override
+    public void internalFrameOpened(InternalFrameEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void internalFrameClosing(InternalFrameEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void internalFrameIconified(InternalFrameEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void internalFrameDeiconified(InternalFrameEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void internalFrameActivated(InternalFrameEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void internalFrameDeactivated(InternalFrameEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private class editTextListener implements MouseListener {
+
+        JLabel label;
+        JTextField field;
+        
+        private boolean singleClicked;
+        
+        public editTextListener(JLabel label, JTextField field) {
+            this.label = label;
+            this.field = field;
+            this.singleClicked = false;
+        }
+        
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (singleClicked) {
+                label.setVisible(false);
+                field.setEnabled(true);
+                field.setVisible(true);
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+        
     }
 
     private class OpenBtnListener implements ActionListener {

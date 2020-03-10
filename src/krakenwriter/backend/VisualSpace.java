@@ -47,38 +47,10 @@ public class VisualSpace {
      * @param newObject the name of the new object ("Document", "Label")
      * @return the object that was just created
      */
-    public static VisualObject createNewObject(String newObject) {
-        System.out.println("cno");
-        VisualObject obj;
-        if (newObject.equals("Document")) {
-            objects.add(obj = new ExternalDocument(0, 0, 300, 300));
-            return obj;
-        } else if (newObject.equals("Label")) {
-            objects.add(obj = new Label(0, 0, 300, 300));
-            return obj;
-        }
-        return null;
-    }
-
-    /**
-     * Creates a new object in the visual space.
-     *
-     * @param newObject the name of the new object ("Document", "Label")
-     * @param parent the parent of the new object
-     * @return the object that was just created
-     */
-    public static VisualObject createNewObject(String newObject, VisualObject parent) {
-        System.out.println("cno");
-        VisualObject obj;
-        switch (newObject) {
-            case "Document":
-                objects.add(obj = new ExternalDocument(0, 0, 300, 300, parent));
-                return obj;
-            case "Label":
-                objects.add(obj = new Label(0, 0, 300, 300, parent));
-                return obj;
-        }
-        return null;
+    public static VisualObject createNewObject(VisualObject obj) {
+        objects.add(obj);
+        System.out.println("Created new object " + obj.title + " with id " + obj.getID().id());
+        return obj;
     }
 
     /**

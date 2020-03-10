@@ -3,14 +3,14 @@ package krakenwriter.backend;
 public class ExternalDocument extends VisualObject {
 
     private InternalDocument internalDoc;
-    
-    public ExternalDocument(int x, int y, int width, int height) {
-        super("Untitled", "Example", x, y, width, height, null, null);
+
+    public ExternalDocument() {
+        super("Untitled", "Example", -1, -1, -1, -1, null, null);
         this.internalDoc = new InternalDocument(this);
     }
-
-    public ExternalDocument(int x, int y, int width, int height, VisualObject parent) {
-        super("Untitled", "Example", x, y, width, height, new VisualObject[]{parent}, null);
+    
+    public ExternalDocument(VisualObject parent) {
+        super("Untitled", "Example", -1, -1, -1, -1, new VisualObject[]{parent}, null);
         this.internalDoc = new InternalDocument(this);
     }
 
