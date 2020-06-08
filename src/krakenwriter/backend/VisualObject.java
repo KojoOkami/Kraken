@@ -10,10 +10,13 @@ public abstract class VisualObject extends Obj {
     private int width;
     private int height;
 
+    private ArrayList<ID> parentIDs;
+    private ArrayList<ID> childIDs;
+    
     private ArrayList<VisualObject> parentObjects;
     private ArrayList<VisualObject> childObjects;
 
-    public VisualObject(String title, String description, int x, int y, int width, int height, VisualObject[] parents, VisualObject[] children) { //Basic Constructor
+    public VisualObject(String title, String description, int x, int y, int width, int height, ID[] parents, ID[] children) { //Basic Constructor
         super(title, description);
         this.x = x;
         this.y = y;
@@ -21,19 +24,19 @@ public abstract class VisualObject extends Obj {
         this.height = height;
 
         if (parents != null) {
-            parentObjects.addAll(Arrays.asList(parents));
+        	parentIDs.addAll(Arrays.asList(parents));
         } else {
-            parentObjects = new ArrayList();
+        	parentIDs = new ArrayList<ID>();
         }
 
         if (children != null) {
-            childObjects.addAll(Arrays.asList(children));
+        	childIDs.addAll(Arrays.asList(children));
         } else {
-            childObjects = new ArrayList();
+        	childIDs = new ArrayList<ID>();
         }
     }
 
-    public VisualObject(String title, String description, int x, int y, int width, int height, String id, VisualObject[] parents, VisualObject[] children) { //Basic Constructor
+    public VisualObject(String title, String description, int x, int y, int width, int height, String id, ID[] parents, ID[] children) { //Basic Constructor
         super(title, description, id);
         this.x = x;
         this.y = y;
@@ -41,15 +44,15 @@ public abstract class VisualObject extends Obj {
         this.height = height;
 
         if (parents != null) {
-            parentObjects.addAll(Arrays.asList(parents));
+        	parentIDs.addAll(Arrays.asList(parents));
         } else {
-            parentObjects = new ArrayList();
+        	parentIDs = new ArrayList<ID>();
         }
 
         if (children != null) {
-            childObjects.addAll(Arrays.asList(children));
+        	childIDs.addAll(Arrays.asList(children));
         } else {
-            childObjects = new ArrayList();
+        	childIDs = new ArrayList<ID>();
         }
     }
 
@@ -77,6 +80,39 @@ public abstract class VisualObject extends Obj {
 
     public int height() {
         return height;
+    }
+    
+    public ID[] getParentIDs() {
+    	return parentIDs.toArray(new ID[parentObjects.size()]);
+    }
+    
+    public ID[] getChildIDs() {
+    	return childIDs.toArray(new ID[childObjects.size()]);
+    }
+    
+    public void initParents(ArrayList<VisualObject> parents) {
+    	parentObjects = parents;
+    	parentIDs = null;
+    }
+    
+    public void initChildren(ArrayList<VisualObject> children) {
+    	childObjects = children;
+    	childIDs = null;
+    }
+    
+    public ArrayList<VisualObject> getParents() {
+    	return parentObjects;
+    }
+    
+    public ArrayList<VisualObject> getChildren() {
+    	return childObjects;
+    }
+    
+    public void update(String title, String description, int x, int y, int width, int height) {
+    	this.title = title;
+    	this.description = description;
+    	this.setPos(x, y);
+    	this.setDimensions(width, height);
     }
 
     public void append(VisualObject child) {
