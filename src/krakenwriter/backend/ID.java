@@ -1,5 +1,7 @@
 package krakenwriter.backend;
 
+import krakenwriter.frontend.VisualSpace;
+
 /**
  *
  * @author Connor
@@ -27,7 +29,7 @@ public class ID {
         } while (checkID());
     }
 
-    private ID(String identifier, int code) {
+    ID(String identifier, int code) {
         this.identifier = identifier;
         this.code = code;
     }
@@ -55,6 +57,14 @@ public class ID {
                 return new ID("CLN", Integer.parseInt(id.substring(3, 9)));
         }
         return null;
+    }
+    
+    public static ID[] toID(String[] ids) {
+        ID[] newIds = new ID[ids.length];
+        for (int i = 0; i < ids.length; i++) {
+        	newIds[i] = toID(ids[i]);
+        }
+        return newIds;
     }
 
     public static String toString(ID id) {

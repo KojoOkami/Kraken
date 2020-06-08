@@ -12,8 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+
+import krakenwriter.backend.ExternalDocument;
 import krakenwriter.backend.VisualObject;
 
 /**
@@ -22,7 +25,12 @@ import krakenwriter.backend.VisualObject;
  */
 public class InternalWindow extends JInternalFrame implements InternalFrameListener {
 
-    JPanel pane;
+    /**
+	 * Serial Version ID
+	 */
+	private static final long serialVersionUID = -3811493956504322783L;
+
+	JPanel pane;
 
     JTextField name;
     JTextField description;
@@ -38,7 +46,8 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
                 true, //maximizable
                 true);
         this.obj = object;
-
+        setResizable(true);
+        
         initComponents();
     }
 
@@ -54,6 +63,7 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
         name.setHorizontalAlignment(JTextField.CENTER);
         name.setBackground(null);
         name.setBorder(null);
+        name.setEditable(false);
         c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -73,6 +83,7 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
         description.setHorizontalAlignment(JTextField.CENTER);
         description.setBackground(null);
         description.setBorder(null);
+        description.setEditable(false);
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 3;
@@ -86,28 +97,30 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
         //c.weighty = 1;
         pane.add(description, c);
 
-        openBtn = new JButton();
-        openBtn.setText("Open");
-        openBtn.addActionListener(new OpenBtnListener());
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 1;
-        //c.gridheight = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.ipadx = 0;
-        //c.ipady = 0;
-        c.insets = new Insets(0, 0, 0, 0);
-        c.anchor = GridBagConstraints.LAST_LINE_START;
-        c.weightx = 1;
-        c.weighty = 10;
-        pane.add(openBtn, c);
-
+        if (obj instanceof ExternalDocument) {
+	        openBtn = new JButton();
+	        openBtn.setText("Open");
+	        openBtn.addActionListener(new OpenBtnListener((ExternalDocument) obj));
+	        c.gridx = 0;
+	        c.gridy = 2;
+	        c.gridwidth = 1;
+	        //c.gridheight = 1;
+	        c.fill = GridBagConstraints.BOTH;
+	        c.ipadx = 0;
+	        //c.ipady = 0;
+	        c.insets = new Insets(0, 0, 0, 0);
+	        c.anchor = GridBagConstraints.LAST_LINE_START;
+	        c.weightx = 1;
+	        c.weighty = 10;
+	        pane.add(openBtn, c);
+        }
+        
         editBtn = new JButton();
         ImageIcon imageIcon = new ImageIcon("./bin/edit.png");
         Image image = imageIcon.getImage();
         Image newimg = image.getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH);
         editBtn.setIcon(new ImageIcon(newimg));
-        openBtn.addActionListener(new EditBtnListener());
+        editBtn.addActionListener(new EditBtnListener(this));
         c.gridx = 2;
         c.gridy = 2;
         c.gridwidth = 1;
@@ -124,6 +137,18 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
         add(pane);
 
         this.pack();
+    }
+    
+    @Override
+    public void setLocation(int x, int y) {
+    	super.setLocation(x, y);
+    	obj.setPos(x, y);
+    }
+    
+    @Override
+    public void setSize(int width, int height) {
+    	super.setSize(width, height);
+    	obj.setDimensions(width, height);
     }
 
     @Override
@@ -163,18 +188,42 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
 
     private class OpenBtnListener implements ActionListener {
 
+    	private ExternalDocument doc;
+    	
+    	public OpenBtnListener(ExternalDocument doc) {
+    		this.doc = doc;
+		}
+    	
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Open Btn");
+        	SwingUtilities.invokeLater(new Runnable() {
+    			public void run() {
+    				new DocWindow(doc);
+    			}
+    		});
         }
 
     }
 
     private class EditBtnListener implements ActionListener {
 
+    	private InternalWindow window;
+    	
+    	public EditBtnListener(InternalWindow window) {
+    		this.window = window;
+    	}
+    	
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Edit Btn");
+        	if (window.name.isEditable()) {
+        		System.out.println("Not editable");
+        		window.name.setEditable(false);
+        		window.description.setEditable(false);
+        	} else {
+        		System.out.println("Editable");
+        		window.name.setEditable(true);
+        		window.description.setEditable(true);
+        	}
         }
 
     }

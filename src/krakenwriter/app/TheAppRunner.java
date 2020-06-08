@@ -1,5 +1,9 @@
 package krakenwriter.app;
 
+import java.io.File;
+
+import krakenwriter.backend.ComputerFile;
+
 public class TheAppRunner {
 
     public static void main(String[] args) {
@@ -20,6 +24,11 @@ public class TheAppRunner {
             System.err.println(ex);
         }
 
+        File projectsPath = new File(ComputerFile.PROJECT_PATH);
+        if (!projectsPath.exists()) {
+        	projectsPath.mkdirs();
+        }
+        
         java.awt.EventQueue.invokeLater(new TheApp());
     }
 }
