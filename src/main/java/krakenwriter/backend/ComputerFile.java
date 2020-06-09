@@ -45,6 +45,7 @@ public class ComputerFile {
     	for (File f : files) {
     		if (f.getName().startsWith("DOC") || f.getName().startsWith("LBL")) {
     			objects.add(getObj(f));
+    			System.out.println(f.getName());
     		}
     	}
     	return objects;
@@ -65,12 +66,17 @@ public class ComputerFile {
     	VisualSpace.projectName = projectName;
     	try {
 			Scanner sc = new Scanner(properties);
-			sc.useDelimiter(",");
-	    	int width = Integer.parseInt(sc.next());
-	    	int height = Integer.parseInt(sc.next());
+			
+			String pos[] = sc.nextLine().split(",");
+			String dimensions[] = sc.nextLine().split(",");
+			
+			int x = Integer.parseInt(pos[0]);
+	    	int y = Integer.parseInt(pos[1]);
+	    	int width = Integer.parseInt(dimensions[0]);
+	    	int height = Integer.parseInt(dimensions[1]);
 	    	
 	    	sc.close();
-	    	
+	    	VisualSpace.setPos(x, y);
 	    	VisualSpace.setDimensions(width, height);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -85,10 +91,17 @@ public class ComputerFile {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ComputerFile.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String title = sc.nextLine(), description = sc.nextLine();
-        int x = sc.nextInt(), y = sc.nextInt(), width = sc.nextInt(), height = sc.nextInt();
-        String parentIDs = sc.nextLine(), childIDs = sc.nextLine();
-        ID id = new ID(object.getName().substring(0,3), Integer.parseInt(object.getName().substring(3)));
+        String title = sc.nextLine(), 
+        		description = sc.nextLine();
+        String position[] = sc.nextLine().split(",");
+        String dimensions[] = sc.nextLine().split(",");
+        int x = Integer.parseInt(position[0]), 
+        		y = Integer.parseInt(position[1]), 
+        		width = Integer.parseInt(dimensions[0]), 
+        		height = Integer.parseInt(dimensions[1]);
+        String parentIDs = sc.nextLine(), 
+        		childIDs = sc.nextLine();
+        ID id = new ID(object.getName().substring(0,3), Integer.parseInt(object.getName().substring(3, object.getName().lastIndexOf(".")), 16));
                
         VisualObject newObj;
         
@@ -134,7 +147,8 @@ public class ComputerFile {
 			FileWriter fw = new FileWriter(properties);
 			PrintWriter pw = new PrintWriter(fw);
 			
-			pw.print(VisualSpace.width() + "," + VisualSpace.height());
+			pw.println(VisualSpace.x() + "," + VisualSpace.y());
+			pw.println(VisualSpace.width() + "," + VisualSpace.height());
 			
 			pw.close();
 			fw.close();
@@ -147,18 +161,26 @@ public class ComputerFile {
     	System.out.println(obj.title);
     	FileWriter fw = null;
 		try {
-			fw = new FileWriter(PROJECT_PATH + VisualSpace.projectName + "/" + obj.getID() + ".txt");
+			File f = new File(PROJECT_PATH + VisualSpace.projectName.replaceAll(" ", "_") + "/" + ID.toString(obj.getID()) + ".txt");
+			f.createNewFile();
+			fw = new FileWriter(f);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
     	PrintWriter pw = new PrintWriter(fw);
     	
-    	String parentIDs = Arrays.toString(obj.getParentIDs());
-    	parentIDs = parentIDs.substring(1, parentIDs.length()-1);
+    	String parentIDs = "";
+    	try {
+    		parentIDs = Arrays.toString(obj.getParentIDs());
+    		parentIDs = parentIDs.substring(1, parentIDs.length()-1);
+    	} catch (NullPointerException e) {}
     	
-    	String childIDs = Arrays.toString(obj.getChildIDs());
-    	childIDs = childIDs.substring(1, childIDs.length()-1);
-    	
+    	String childIDs = "";
+    	try {
+	    	childIDs = Arrays.toString(obj.getChildIDs());
+	    	childIDs = childIDs.substring(1, childIDs.length()-1);
+    	} catch (NullPointerException e) {}
+	    	
     	pw.write(obj.title + "\n"
     			+ obj.description + "\n"
     			+ obj.x() + "," + obj.y() + "\n"
@@ -180,6 +202,20 @@ public class ComputerFile {
     public static void deleteProject(String projectName) {
     	String path = PROJECT_PATH + VisualSpace.projectName.strip().replaceAll(" ", "_");
     	File folder = new File(path);
-    	folder.delete();
+    	deleteFolder(folder);
+    }
+    
+    private static void deleteFolder(File folder) {
+        File[] files = folder.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f: files) {
+                if(f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+        folder.delete();
     }
 }

@@ -1,13 +1,14 @@
 package krakenwriter.app;
 
-import krakenwriter.frontend.MainWindow;
+import krakenwriter.frontend.InitWindow;
+import krakenwriter.frontend.VisualSpace;
 
 public class TheApp implements Runnable {
 
     @Override
     public void run() {
-        MainWindow theMainWindow = new MainWindow();
-
-        theMainWindow.setVisible(true);
+        VisualSpace.iw = new InitWindow();
+        
+        VisualSpace.iw.setVisible(true);
     }
 }

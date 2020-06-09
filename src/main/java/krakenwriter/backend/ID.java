@@ -48,14 +48,16 @@ public class ID {
     }
 
     public static ID toID(String id) {
-        switch (id.substring(0, 3)) {
-            case "DOC":
-                return new ID("DOC", Integer.parseInt(id.substring(3, 9)));
-            case "LBL":
-                return new ID("LBL", Integer.parseInt(id.substring(3, 9)));
-            case "CLN":
-                return new ID("CLN", Integer.parseInt(id.substring(3, 9)));
-        }
+    	if (id.length() == 9) {
+	        switch (id.substring(0, 3)) {
+	            case "DOC":
+	                return new ID("DOC", Integer.parseInt(id.substring(3, 9)));
+	            case "LBL":
+	                return new ID("LBL", Integer.parseInt(id.substring(3, 9)));
+	            case "CLN":
+	                return new ID("CLN", Integer.parseInt(id.substring(3, 9)));
+	        }
+    	}
         return null;
     }
     
@@ -68,7 +70,11 @@ public class ID {
     }
 
     public static String toString(ID id) {
-        return id.identifier + Integer.toHexString(id.code);
+    	String hexCode = Integer.toHexString(id.code);
+    	while (hexCode.length() < 6) {
+    		hexCode = "0" + hexCode;
+    	}
+        return id.identifier + hexCode;
     }
 
     private boolean checkID() {

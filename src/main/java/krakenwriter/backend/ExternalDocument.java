@@ -10,8 +10,9 @@ public class ExternalDocument extends VisualObject {
     }
     
     public ExternalDocument(VisualObject parent) {
-        super("Untitled", "Example", -1, -1, -1, -1, new ID[]{parent.getID()}, null);
+        super("Untitled", "Example", -1, -1, -1, -1, null, null);
         this.internalDoc = new InternalDocument(this);
+        parent.append(this);
     }
 
     public ExternalDocument(String title, String description, int x, int y, int width, int height, String id, ID[] parents, ID[] children) {

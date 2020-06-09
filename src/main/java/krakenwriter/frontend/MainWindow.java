@@ -1,10 +1,12 @@
 package krakenwriter.frontend;
 
-import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.MouseInfo;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,8 +19,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import krakenwriter.backend.ComputerFile;
-import krakenwriter.backend.ConnectionLine;
 import krakenwriter.backend.ExternalDocument;
 import krakenwriter.backend.Label;
 import krakenwriter.backend.VisualObject;
@@ -41,41 +41,51 @@ public class MainWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.initComponents();
-        setTitle("Kraken");
+        
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+            	super.componentResized(e);
+                VisualSpace.setDimensions(((JFrame)e.getSource()).getWidth(), ((JFrame)e.getSource()).getHeight());
+            }
+            @Override
+            public void componentMoved(ComponentEvent e) {
+            	super.componentMoved(e);
+            	VisualSpace.setPos(((JFrame)e.getSource()).getX(), ((JFrame)e.getSource()).getY());
+            }
+        });
     }
 
     private void initComponents() {
         int inset = 50;
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset, inset,
-                screenSize.width - inset * 2,
-                screenSize.height - inset * 2);
+                VisualSpace.width(),
+                VisualSpace.height());
 
-        desktop = new JDesktopPane();
+        desktop = new JDesktopPane() {
+			private static final long serialVersionUID = 8280329506314401645L;
+			
+			@Override
+			public void paint(Graphics g) {
+				super.paint(g);
+				Graphics2D realm1 = (Graphics2D) g;
+            	Iterator<VisualObject> i = VisualSpace.getObjectIterator();
+            	while (i.hasNext()) {
+            		VisualObject obj = i.next();
+            		ArrayList<VisualObject> children = obj.getChildren();
+            		if (children != null && children.size() > 0 && children.get(0) != null) {
+        	    		for (VisualObject o : children) {
+        	    			realm1.drawLine(obj.x() + obj.width(), obj.y() + obj.height(), o.x() + o.width(), o.y());
+        	    		}
+            		}
+            	}
+			}
+        };
         //scroll = new JScrollPane(desktop);
         setContentPane(desktop); //setContentPane(scroll);
         setJMenuBar(createMenuBar());
 
         setVisible(true);
-    }
-    
-    public void drawAllLines() {
-    	Iterator<VisualObject> i = VisualSpace.getObjectIterator();
-    	ArrayList<ConnectionLine> list = new ArrayList<ConnectionLine>();
-    	while (i.hasNext()) {
-    		VisualObject obj = i.next();
-    		ArrayList<VisualObject> children = obj.getChildren();
-    		for (VisualObject o : children) {
-    			list.add(drawLines(obj, o));
-    		}
-    	}
-    }
-    
-    public ConnectionLine drawLines(VisualObject parent, VisualObject child) {
-    	ConnectionLine cl = new ConnectionLine(parent, child);
-    	desktop.add(new Line(cl));
-    	VisualSpace.addConnection(cl);
-    	return cl;
     }
 
     private JMenuBar createMenuBar() {
@@ -148,7 +158,7 @@ public class MainWindow extends JFrame {
             	}
             } else if ("Delete Project".equals(e.getActionCommand())) { //Delete Project
             	if (DeleteProjectPanel.createAndShowGui()) {
-            		ComputerFile.deleteProject(VisualSpace.projectName);
+            		VisualSpace.deleteProject();
             	}
             } else if ("New Document".equals(e.getActionCommand())) { //New Object
                 createFrame(VisualSpace.createNewObject(new ExternalDocument()));
@@ -157,5 +167,4 @@ public class MainWindow extends JFrame {
             }
         }
     }
-    
 }

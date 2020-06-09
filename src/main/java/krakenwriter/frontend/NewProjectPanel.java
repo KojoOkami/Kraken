@@ -62,6 +62,6 @@ public class NewProjectPanel extends JPanel {
 			return mainPanel.getText();
 		}
 
-		return "";
+		return null;
 	}
 }

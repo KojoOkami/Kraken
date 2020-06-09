@@ -1,7 +1,5 @@
 package krakenwriter.backend;
 
-import java.awt.Graphics;
-
 public class ConnectionLine extends VisualObject {
     private VisualObject parentObj;
     private VisualObject childObj;

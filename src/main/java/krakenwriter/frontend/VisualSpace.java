@@ -6,6 +6,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JFrame;
+
 import krakenwriter.backend.ComputerFile;
 import krakenwriter.backend.ConnectionLine;
 import krakenwriter.backend.ID;
@@ -13,9 +15,15 @@ import krakenwriter.backend.VisualObject;
 
 public class VisualSpace {
 	
+	@SuppressWarnings("unused")
 	private static String status;
 	
-    private static int width;
+	public static InitWindow iw;
+	public static MainWindow mw;
+	
+	private static int x;
+	private static int y;
+	private static int width;
     private static int height;
     public static String projectName;
     private static ArrayList<VisualObject> objects = new ArrayList<VisualObject>();
@@ -27,6 +35,12 @@ public class VisualSpace {
      * @param projectName Name for the new Project
      */
     public static void createNewProject(String projectName) {
+    	if (mw != null) {
+    		mw.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    		mw.dispose();
+    	}
+    	mw = new MainWindow();
+    	mw.setTitle(projectName.replace("_", " "));
     	if (checkFolderForExistingProject(projectName)) {
     		System.err.println("ProjectAlreadyExistsError: " + projectName);
     	}
@@ -58,20 +72,20 @@ public class VisualSpace {
      * @param projectName name of the project to load
      */
     public static void loadProject(String projectName) {
-    	MainWindow mw = new MainWindow();
+    	if (mw != null) {
+    		mw.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    		mw.dispose();
+    	}
+    	mw = new MainWindow();
+    	mw.setTitle(projectName.replace("_", " "));
     	
     	objects = ComputerFile.load(projectName.replace("_", " "));
     	for (VisualObject o : objects) {
         	mw.createFrame(o);
     	}
     	
-    	updateStatus("Assigning hierarchy");
-    	createHieracrchyFromIDs();
-    	
-    	updateStatus("Creating connections");
-    	mw.drawAllLines();
-    	
     	updateStatus("Done");
+    	mw.setVisible(true);
     }
 
     /**
@@ -90,7 +104,6 @@ public class VisualSpace {
      */
     public static VisualObject createNewObject(VisualObject obj) {
         objects.add(obj);
-        System.out.println("Created new object " + obj.title + " with id " + obj.getID().id());
         return obj;
     }
 
@@ -131,19 +144,20 @@ public class VisualSpace {
     }
     
     public static void deleteObject(VisualObject obj) {
-    	if (objects.remove(obj)) {
-    		System.out.println("Deleted " + obj.getID().toString());
-    	}
+    	objects.remove(obj);
     }
     
     public static void updateStatus(String status) {
     	VisualSpace.status = status;
-    	//Something about updating frontend
+    	if (iw != null) {
+    		iw.setTitle(status);
+    	}
     }
     
     public static void setDimensions(int width, int height) {
     	VisualSpace.width = width;
     	VisualSpace.height = height;
+    	mw.setBounds(mw.getX(), mw.getY(), width, height);
     }
     
     public static int width() {
@@ -154,31 +168,33 @@ public class VisualSpace {
     	return height;
     }
     
-    public static Iterator<VisualObject> getObjectIterator() {
-    	return objects.iterator();
+    public static void setPos(int x, int y) {
+    	VisualSpace.x = x;
+    	VisualSpace.y = y;
+    	mw.setBounds(x, y, mw.getWidth(), mw.getHeight());
     }
     
-    /**
-     * Sets up the project after load and convert the IDs of the object's parents and children to objects
-     */
-    private static void createHieracrchyFromIDs() {
-    	for (VisualObject o : objects) {
-    		ArrayList<VisualObject> parents = new ArrayList<VisualObject>(1);
-    		ArrayList<VisualObject> children = new ArrayList<VisualObject>(3);
-    		ID[] ids = o.getParentIDs();
-    		for (ID i : ids) {
-    			parents.add(VisualSpace.getObject(i));
-    		}
-    		ids = o.getChildIDs();
-    		for (ID i : ids) {
-    			children.add(VisualSpace.getObject(i));
-    		}
-    		o.initParents(parents);
-    		o.initChildren(children);
-    	}
+    public static int x() {
+    	return x;
+    }
+    
+    public static int y() {
+    	return y;
+    }
+    
+    public static Iterator<VisualObject> getObjectIterator() {
+    	return objects.iterator();
     }
     
     public static void addConnection(ConnectionLine cl) {
     	lines.add(cl);
     }
+
+	public static void deleteProject() {
+		mw.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		mw.dispose();
+		ComputerFile.deleteProject(projectName);
+		iw = new InitWindow();
+        iw.setVisible(true);
+	}
 }

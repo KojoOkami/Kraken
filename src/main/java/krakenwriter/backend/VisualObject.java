@@ -3,6 +3,8 @@ package krakenwriter.backend;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import krakenwriter.frontend.VisualSpace;
+
 public abstract class VisualObject extends Obj {
 
     private int x;
@@ -23,17 +25,24 @@ public abstract class VisualObject extends Obj {
         this.width = width;
         this.height = height;
 
+        parentIDs = new ArrayList<ID>();
         if (parents != null) {
         	parentIDs.addAll(Arrays.asList(parents));
-        } else {
-        	parentIDs = new ArrayList<ID>();
         }
 
+        childIDs = new ArrayList<ID>();
         if (children != null) {
         	childIDs.addAll(Arrays.asList(children));
-        } else {
-        	childIDs = new ArrayList<ID>();
         }
+        
+        parentObjects = new ArrayList<VisualObject>(1);
+        childObjects = new ArrayList<VisualObject>(3);
+		for (ID i : parentIDs) {
+			parentObjects.add(VisualSpace.getObject(i));
+		}
+		for (ID i : childIDs) {
+			childObjects.add(VisualSpace.getObject(i));
+		}
     }
 
     public VisualObject(String title, String description, int x, int y, int width, int height, String id, ID[] parents, ID[] children) { //Basic Constructor
@@ -43,17 +52,24 @@ public abstract class VisualObject extends Obj {
         this.width = width;
         this.height = height;
 
+        parentIDs = new ArrayList<ID>();
         if (parents != null) {
         	parentIDs.addAll(Arrays.asList(parents));
-        } else {
-        	parentIDs = new ArrayList<ID>();
         }
 
+        childIDs = new ArrayList<ID>();
         if (children != null) {
         	childIDs.addAll(Arrays.asList(children));
-        } else {
-        	childIDs = new ArrayList<ID>();
         }
+        
+        parentObjects = new ArrayList<VisualObject>(1);
+        childObjects = new ArrayList<VisualObject>(3);
+		for (ID i : parentIDs) {
+			parentObjects.add(VisualSpace.getObject(i));
+		}
+		for (ID i : childIDs) {
+			childObjects.add(VisualSpace.getObject(i));
+		}
     }
 
     public void setPos(int x, int y) {
@@ -88,16 +104,6 @@ public abstract class VisualObject extends Obj {
     
     public ID[] getChildIDs() {
     	return childIDs.toArray(new ID[childObjects.size()]);
-    }
-    
-    public void initParents(ArrayList<VisualObject> parents) {
-    	parentObjects = parents;
-    	parentIDs = null;
-    }
-    
-    public void initChildren(ArrayList<VisualObject> children) {
-    	childObjects = children;
-    	childIDs = null;
     }
     
     public ArrayList<VisualObject> getParents() {

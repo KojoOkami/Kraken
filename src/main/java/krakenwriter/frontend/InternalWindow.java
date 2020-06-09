@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.Image;
 
 import javax.swing.AbstractButton;
@@ -70,8 +72,16 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
 		setMinimumSize(new Dimension(300, 125));
 		removeMinMaxClose(this);
 		initComponents();
-		setSize(300, 125);
+		setBounds(object.x(), object.y(), 300, 125);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentMoved(ComponentEvent e) {
+            	super.componentMoved(e);
+            	VisualSpace.getObject(object.getID()).setPos(((JInternalFrame)e.getSource()).getX(), ((JInternalFrame)e.getSource()).getY());
+            }
+        });
 	}
 
 	private void initComponents() {
@@ -165,7 +175,7 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
 		image = imageIcon.getImage();
 		newimg = image.getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH);
 		addChild.setIcon(new ImageIcon(newimg));
-		addChild.addActionListener(new AddChildListener());
+		addChild.addActionListener(new AddChildListener(obj));
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 1;
@@ -282,8 +292,16 @@ public class InternalWindow extends JInternalFrame implements InternalFrameListe
 	
 	private class AddChildListener implements ActionListener {
 
+		VisualObject obj;
+		
+		public AddChildListener(VisualObject obj) {
+			this.obj = obj;
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			VisualObject child = new ExternalDocument(obj);
+			VisualSpace.mw.createFrame(VisualSpace.createNewObject(child));
 		}
 		
 	}
