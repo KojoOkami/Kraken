@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -16,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import krakenwriter.backend.ComputerFile;
+import krakenwriter.backend.ConnectionLine;
 import krakenwriter.backend.ExternalDocument;
 import krakenwriter.backend.Label;
 import krakenwriter.backend.VisualObject;
@@ -32,13 +35,13 @@ public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 983097105017369062L;
 	
 	JDesktopPane desktop;
-    //JScrollPane scroll;
 
     public MainWindow() {
         super(VisualSpace.projectName);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.initComponents();
+        setTitle("Kraken");
     }
 
     private void initComponents() {
@@ -55,6 +58,25 @@ public class MainWindow extends JFrame {
 
         setVisible(true);
     }
+    
+    public void drawAllLines() {
+    	Iterator<VisualObject> i = VisualSpace.getObjectIterator();
+    	ArrayList<ConnectionLine> list = new ArrayList<ConnectionLine>();
+    	while (i.hasNext()) {
+    		VisualObject obj = i.next();
+    		ArrayList<VisualObject> children = obj.getChildren();
+    		for (VisualObject o : children) {
+    			list.add(drawLines(obj, o));
+    		}
+    	}
+    }
+    
+    public ConnectionLine drawLines(VisualObject parent, VisualObject child) {
+    	ConnectionLine cl = new ConnectionLine(parent, child);
+    	desktop.add(new Line(cl));
+    	VisualSpace.addConnection(cl);
+    	return cl;
+    }
 
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -66,22 +88,10 @@ public class MainWindow extends JFrame {
                 new int[]{KeyEvent.VK_S, -1, KeyEvent.VK_O, -1});
 
         newMenu(menuBar,
-                "Edit",
-                -1,
-                new String[]{"Undo", "Redo"},
-                new int[]{KeyEvent.VK_Z, KeyEvent.VK_Y});
-
-        newMenu(menuBar,
                 "Objects",
                 KeyEvent.VK_D,
-                new String[]{"New Document", "New Label", "Delete Object"},
-                new int[]{KeyEvent.VK_N, -1, -1, KeyEvent.VK_DELETE});
-
-        newMenu(menuBar,
-                "Windows",
-                KeyEvent.VK_W,
-                new String[]{"Navigator"},
-                new int[]{KeyEvent.VK_F});
+                new String[]{"New Document", "New Label"},
+                new int[]{KeyEvent.VK_N, -1});
 
         return menuBar;
     }
@@ -116,10 +126,6 @@ public class MainWindow extends JFrame {
         } catch (java.beans.PropertyVetoException e) {}
     }
     
-    protected void deleteSelectedFrame() {
-    	throw new java.lang.UnsupportedOperationException("Not supported yet.");
-    }
-    
     private class MenuListener implements ActionListener {
 
         @Override
@@ -144,18 +150,10 @@ public class MainWindow extends JFrame {
             	if (DeleteProjectPanel.createAndShowGui()) {
             		ComputerFile.deleteProject(VisualSpace.projectName);
             	}
-            } else if ("Undo".equals(e.getActionCommand())) { //Undo
-            	throw new java.lang.UnsupportedOperationException("Not supported yet.");
-            } else if ("Redo".equals(e.getActionCommand())) { //Redo
-            	throw new java.lang.UnsupportedOperationException("Not supported yet.");
             } else if ("New Document".equals(e.getActionCommand())) { //New Object
                 createFrame(VisualSpace.createNewObject(new ExternalDocument()));
             } else if ("New Label".equals(e.getActionCommand())) { //New Object
                 createFrame(VisualSpace.createNewObject(new Label()));
-            } else if ("Delete Object".equals(e.getActionCommand())) { //Delete Object
-            	deleteSelectedFrame();
-            } else if ("Navigator".equals(e.getActionCommand())) { //Navigator
-            	throw new java.lang.UnsupportedOperationException("Not supported yet.");
             }
         }
     }

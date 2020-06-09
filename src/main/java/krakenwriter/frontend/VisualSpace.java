@@ -3,7 +3,6 @@ package krakenwriter.frontend;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -58,16 +57,19 @@ public class VisualSpace {
      * 
      * @param projectName name of the project to load
      */
-    public static void loadProject(String projectName) { 	
+    public static void loadProject(String projectName) {
+    	MainWindow mw = new MainWindow();
+    	
     	objects = ComputerFile.load(projectName.replace("_", " "));
-    	//Something about a call to the frontend to render the new objects
+    	for (VisualObject o : objects) {
+        	mw.createFrame(o);
+    	}
     	
     	updateStatus("Assigning hierarchy");
     	createHieracrchyFromIDs();
     	
     	updateStatus("Creating connections");
-    	applyConnections();
-    	//Something about a call to the frontend to render the new lines
+    	mw.drawAllLines();
     	
     	updateStatus("Done");
     }
@@ -128,6 +130,12 @@ public class VisualSpace {
         return null;
     }
     
+    public static void deleteObject(VisualObject obj) {
+    	if (objects.remove(obj)) {
+    		System.out.println("Deleted " + obj.getID().toString());
+    	}
+    }
+    
     public static void updateStatus(String status) {
     	VisualSpace.status = status;
     	//Something about updating frontend
@@ -169,19 +177,8 @@ public class VisualSpace {
     		o.initChildren(children);
     	}
     }
-
-    /**
-     * Creates and applies Connections lines between an object and its child
-     * objects.
-     */
-    private static void applyConnections() {
-    	for (VisualObject o : objects) {
-    		ArrayList<VisualObject> children = o.getChildren();
-    		for (VisualObject c : children) {
-    			lines.add(new ConnectionLine(o,c));
-    		}
-    	}
-    }
     
-
+    public static void addConnection(ConnectionLine cl) {
+    	lines.add(cl);
+    }
 }
