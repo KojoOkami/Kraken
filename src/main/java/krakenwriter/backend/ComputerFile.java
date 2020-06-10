@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,8 +100,13 @@ public class ComputerFile {
         		y = Integer.parseInt(position[1]), 
         		width = Integer.parseInt(dimensions[0]), 
         		height = Integer.parseInt(dimensions[1]);
-        String parentIDs = sc.nextLine(), 
-        		childIDs = sc.nextLine();
+        
+        String parentIDs = "",
+        		childIDs = "";
+        try { 
+	        parentIDs = sc.nextLine();
+	        		childIDs = sc.nextLine();
+        } catch (NoSuchElementException e) {} catch (NullPointerException e) {}
         ID id = new ID(object.getName().substring(0,3), Integer.parseInt(object.getName().substring(3, object.getName().lastIndexOf(".")), 16));
                
         VisualObject newObj;
